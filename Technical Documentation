@@ -1,0 +1,330 @@
+The following table shows a summary of the modifications applied to the wiki
+
+Class/ Function name	Class	Type of Change
+Edit()	Editpage	Modification to the exiting code
+showEditForm()	Editpage	Modification to the exiting code
+showQtiForm()	Editpage	New function taken from Eqiat authoring tool
+initialXML()	Editpage	New function taken from Eqiat authoring tool
+buildTEQTI()	Editpage	New function taken from Eqiat authoring tool
+buildQMQTI()	Editpage	New function taken from Eqiat authoring tool
+BuildMCQti()	Editpage	New function taken from Eqiat authoring tool
+buildEMIQTI()	Editpage	New function taken from Eqiat authoring tool
+setQTIID()	Editpage	New function taken from Eqiat authoring tool
+getQTIID()	Editpage	New function taken from Eqiat authoring tool
+ShowEMIForm()	Editpage	New function taken from Eqiat authoring tool
+ShowQMForm()	Editpage	New function taken from Eqiat authoring tool
+ShowTEForm()	Editpage	New function taken from Eqiat authoring tool
+ShowMcForm()	Editpage	New function taken from Eqiat authoring tool
+showQtiForm()	Editpage	New function taken from Eqiat authoring tool
+addCategorylist()	Editpage	New function added to the class
+importFormData()	Editpage	Modification to the exiting code
+initialiseForm()	Editpage	Modification to the exiting code
+showTextbox() 	Editpage	Modification to the exiting code
+getPreviewText()	Editpage	Modification to the exiting code
+showDiff Function()	Editpage	Modification to the exiting code
+StripCategoryFromXml()	Editpage	New function added to the class
+GetCategoryFromXml()	Editpage	New function added to the class
+DownloadItem()	Editpage	New function added to the class
+View() 	Article	Modification to the exiting code
+renderNewRevision() 	DifferenceEngine 	Modification to the exiting code
+getDiffBody() 	DifferenceEngine 	Modification to the exiting code
+SpecialAddQuestion	New class	New class
+SpecialGenerateAnAssessment	New class	New class
+Autoloader 	Autoloader class 	Modification to the exiting code
+SpecialPageFactory 	SpecialPageFactory class	Modification to the exiting code
+MonoBook class 	class	Modification to the exiting code
+
+ 
+Modifications applied to the Editpage class
+
+Several functions in the Editpage (/includes/EditPage.php) class were modified and some new functions were added. The following is a brief technical discussion for these functions. A new public variables were added to the Editpage class   such as (Qtitype) which was added to hold the type of the item (question) being composed. Another Boolean public variable called (download) was also added to hold the true or false value depending on the type of the submitted form.
+
+Edit function
+
+The edit function is the function that gets called upon hitting the action button ‘Edit’. It sets up various member variables, then passes execution to another function, usually showEditForm(). This function was modified to check for the value of a hidden variable (itemtp) which was added to the edit form to hold the question (item) type and accordingly updates the value of the public variable (Qtitype).
+
+Also a new form type was introduced which is ‘download’ to allow this class from downloading the xml representation of the question. So in this method some code was added to check for the variable ‘wpXmlDownload’ was posted when the form was submitted and accordingly sets the Boolean value to a newly added public variable called download. The function was also modified to check if the value of the public variable to true then it sets the public variable formtype to download then passes the execution to another function, the DownloadItem().
+
+showEditForm Function
+
+The showEditForm function is called to display the edit form of a page. The html code for the edit form was modified to contain a variable (itemtp) of type hidden to hold the type of the question being composed. Also this function was modified to display the appropriate edit toolbar based on the page type. If the page is a special page or the main page the regular edit toolbar will be displayed using the getEditToolbar2() function else the new toolbar showing the question types as buttons will be displayed by calling the modified getEditToolbar()function, in addition to displaying the question type in the header in of the edit form with its description. The appropriate edit form based on the question type specified by the public variable (Qtitype) is displayed by passing the execution to another newly added function called showQtiForm().Plus, when the edited page is not a special page and is not the main page, the function displays a drop down list with all the available learning outcomes by calling the newly added function addCategorylist()function.
+
+showQtiForm Function
+
+The showQtiForm function is a new function added to the edit class and it was taken from the PHP based Qti item authoring tool (http://wiki.qtitools.org/wiki/Eqiat). There are five types of items that can be generated using the Eqiat authoring tool and each one of them has a different form as each item consists of different sections yet they all share some common components. The showQtiForm function adds the common parts of items to the form and then based on the item type it passes the execution to another function which will construct the parts of the form related to the item type and returns the string to showQtiForm. There are four functions for each item type and those are  ShowMcForm()( for the multiple choice and the multiple response items), ShowEMIForm() (for the extending matching item), ShowTEForm()( for the text entry question)  and ShowQMForm()(for the question matrix item). This function also calls another new function called setQTIID() which generates a QTI for each item and return the string back to calling function which in turn adds it to a hidden filed in the form. Finally this form also loads the required java scripts and JQuery libraries required for each of the forms. All the required java scripts are located in /resources/Qti. This function returns the constructed html constructed code for the form as string and returns back to the calling function.
+
+addCategorylist Function
+
+The addCategorylist function is a newly added function to the Editpage class. This function retrieves a list of all categories from the database and prepares an HTML code for a drop list with all the categories available and returns HTML code for a drop list of the categories in a string. The sql query queries the page table for page titles of name space 14. The function reformats the retrieved the page tiles to replace the underscore with an empty space.
+
+importFormData Function
+
+This function is an existing function in the Editpage class it basically imports that data which was submitted with the edit form. In summary, this functions imports the text that was entered by the user and stores it in a public variable called textbox1 so that it can be saved in the database later on when the execution is passed to the save function. The importFormData function was modified because the edit form was modified to account for the different types of questions. 
+Based on the item type this function was customized to passes the executions to the appropriate QTI item build functions. There are four Qti item build functions and those are buildEMIQTI() (for creating the Qti structure for the Extending Matching item),  buildTEQTI() (for creating the Qti structure for the text entry question) , buildQMQTI() (for creating the Qti structure for the question matrix item) and buildMCQTI()(for creating the Qti structure for the multiple choice and multiple response questions). Each one of the previously mentioned functions creates the Qti xml based structure for the composed question based on the data submitted in the form and returns the Qti xml representation as string to calling function i.e. importFormData which stores the string of the Qti xml representation of the question in the public variable textbox1 after it appends the category to it. The mechanism of adding pages to categories in MediaWiki is via appending the name of the category to the page content following certain syntax. This function extracts the category from the submitted data then formulates it according the following syntax in the below box and then appends it to the xml string returned by the Qti building functions. 
+
+
+
+initialiseForm Function 
+
+This function is an existing function in the Editpage class which initializes the fields in the edit when it the edit link is clicked. The original version of this function loads the content of the page from the database using a function called getContent().Since the content of the page is not plain text as it used to be since questions are now in the Qti xml form some modification was applied to the  function to be able to load the content of the page as an xml object and then extracts the required data accordingly to initialize the fields in the form. The function uses the SimpleXMLElement()function to load the xml object from a string. The data extracted from the xml object varied based on the item type.
+  
+showTextbox Function 
+
+The showTextbox function is an existing function in the Editpage class and it displays the large text are box for the user at the time of the editing. The text area box is original generic editing style of the MediaWiki engine. In this case the generic editor is not required for all the pages because questions now have special editing forms with certain fields  like the title, stimulus, question prompt, options, right answer …etc  The function was modified to display the text area when the edited page is the main page, category or a special page and hide it otherwise.
+
+getPreviewText Function 
+
+This is an existing function in the Editpage class and it previews the text entered by the user before saving. The original version of this function renders the text from the text area box and prepares it for being previewed by the user. However the text area now doesn’t always contain human readable text; in case the edited page is not the main page, a special page or a category page then the content of the text area will be the Qti xml representation of the question. In order to preview the content of the xml object the function was modified to use the Extensible Stylesheet Language Transformation (XSLT) to translate the Qti xml content into HTML code. An object of type DOMDocument was used to import the designed XSLT style sheet using the load() function and an XSLTProcessor object was used to import the XSLT style sheet (includes/PreviewAssessmentItem.xsl) using the importStylesheet()function. While the  simplexml_load_string() function was used to load the xml object from the string stored in the text are box after stripping the category code which was appended to the xml object in the importFormData() function after the xml was constructed by the build functions. Then the transformToXML() function was used to Transforms the source node to a string applying the style sheet. 
+getEditToolbar Function
+
+This is an existing function in the Editpage class that shows a bulletin board style toolbar for common editing functions. This function was modified to display the new tool bar which contains the type of the questions that can be composed. A copy of this function was made and it was called getEditToolbar2 () to be invoked when editing the main page, special pages or category pages. Also the Java script code necessary for this toolbar to function was modified so that each time an item type button is clicked the value of the itemtp variable with the item type and submits the form. The java script is located in resources/mediawiki.action/mediawiki.action.edit.js
+
+showDiff Function
+
+This is an existing function in the Editpage class; it gets the difference between the current contents of the edit box and the version of the page we're editing from. The function uses the getDiff() from the DifferenceEngine class. The getDiff() function performs text based comparison and therefore accepts two parameters of type string. The two variables in the showDiff() function namely oldtext and newtext will contain the Qti xml representation and therefore the contents needs to be translated to text. Therefore the function was modified to translate the xml to human readable text using the an imported XSLT style sheet (includes/PreviewAssessmentItemtxt.xsl), that specifies the output as a text, using importStylesheet() function and the xml object which is loaded using the simplexml_load_string() and then translated into text using transformToXML() after stripping the categories out using the StripCategoryFromXml(). Then the categories in text form (without the MediaWiki syntax) are re-appended to the human readable text version of the questions before they are finally passed as parameters to the getDiff() function. The categories in human readable text forms are obtained using the GetCategoryFromXml().
+
+StripCategoryFromXml Function
+
+This a new function added to the Editpage class. This function strips the category code line from the xml stored in txtbox1 contains txtbox1 xml text content without the category.  
+   
+GetCategoryFromXml Function
+
+This a new function added to the Editpage class. This function strips the category code line from the xml stored in txtbox1 and returns a text contains the category code as [[Category:CatName]]
+ 
+DownloadItem Function 
+
+This a new function added to the Editpage class. It downloads the content of the textbox1 after stripping the category code using StripCategoryFromXml(). 
+
+Modifications applied to the Article class
+
+View () Function 
+
+This is the default action of the index.php entry point; just views the page of the given title. Since the page content is now the Qti xml representation of the question the function had to be modified to translate the content of the xml file into html that can be displayed.
+A copy of the existing function was made and named as View2() which will be called for displaying the main page, any special page and category pages. The raw content of the page is fetched using the getRawText()function. Then an object of type DOM is created to use its load () function to load the XSLT stylesheet. Also, an object of type XSLTProcessor was created to import the stylesheet as a DOM object. Then category line code is stripped from the XML text. Then the simplexml_load_string()function will be used to load the XML text as an XML DOM object which will be passed to the transformToXML()function which will translate the XML into HTML code which will be added to the $wgout variable via the Output page object $wgOut->addHTML()function to change the rendering of the page. 
+
+Modifications applied to the DifferenceEngine class
+
+Two of the functions of this class were modified namely “renderNewRevision” and “getDiffBody” the former function displays the most recent version of the page. The latter one performs text comparison between the contents of two selected revisions and highlights the discrepancies. 
+
+renderNewRevision() Function 
+
+This function displays the latest version of the page when two versions of the page are being compared. The content of the page is not always a readable text as some pages contain the Qti XML representation of the question. This function was modified to able to translate the content of the page from XML into HTML in case the page was not a category page, the main page or a special page. As in all the other functions the raw content of the page is fetched using the getRawText()function. Then an object of type DOM is created to use its load () function to load the XSLT stylesheet. Also, an object of type XSLTProcessor was created to import the stylesheet as a DOM object. Then category line code is stripped from the XML text. Then the simplexml_load_string()function will be used to load the XML text as an XML DOM object which will be passed to the transformToXML()function which will translate the XML into HTML code which will be added to the $wgout variable via the Output page object $wgOut->addHTML()function to change the rendering of the page. 
+
+getDiffBody() Function
+
+The getDiffBody() performs text based comparison between the contents of two selected revisions and highlights the differences. This function passes the execution to another function called generateDiffBody() which accepts two string parameters and compare them against each other. Since generateDiffBody() accepts only string parameters the getDiffBody() had to be modified to translate the XML content of the pages into texts using an XSLT stylesheet. The two variables in the getDiffBody() function namely oldtext and newtext will contain the Qti XML representation and therefore the contents needs to be translated to text. The function was modified to translate the xml to human readable text using the an imported XSLT style sheet (includes/PreviewAssessmentItemtxt.xsl), that specifies the output as a text, using importStylesheet() function and the xml object which is loaded using the simplexml_load_string() and then translated into text using transformToXML() after stripping the categories out using the StripCategoryFromXml(). Then the categories in text form (without the MediaWiki syntax) are re-appended to the human readable text version of the questions before they are finally passed as parameters to the getDiff() function. The categories in human readable text forms are obtained using the GetCategoryFromXml().
+
+New Classes Added to the MediaWiki 
+
+Special pages are classes that are added to the MediaWiki engine on demand to perform a specific function. One of the added special pages is called “Add a Question” which is used to help teachers add questions to the wiki. Another one is “Generate an Assessment”. “Create Bulk Categories” is another special page class that was added to help administrators build the curriculum tree.
+
+Add a Question Special Page
+
+This special page (includes/specials/SpecialAddQuestion.php) displays a simple form that prompts the user to choose learning out come from a drop list. Then once the form is submitted the class preserves the way MediaWiki engine creates new pages; the class first generates title for the page following this notation: LearningOutcome.Qn where N is the number of the question under the chosen learning outcome. Then the engine searches for this title if a page with same title exists then the page will be displayed for editing else a new page is created with this title and will be displayed for editing. The Add a Question class is a copy of the existing SpecialSearch class with some functions modified like the execute() function and the goResult(). Some new functions were also added to this class namely the generateQtitle() and the addCategorylist(). 
+
+execute Function
+
+The execute() function was modified to load the java script (/resources/Qti/Cat_List.js). This script checks whether or not the user have chosen a learning outcome upon submitting the form and stops the form from submitting if the user didn’t select a learning outcome and displays a message for the user asking him to chose a learning outcome.  The function was also modified to generate a new title using the learning outcome that was submitted with the form by calling the generateQtitle() function and use the returned title as the searching parameter. 
+
+goResult Function
+
+Was modified to show the new form of the Add a question page which simply a drop  down list with all the categories available in the wiki and submit button called add a question. The category list is obtained via calling the addCategorylist()  function. Also if the current page title already exists the code modified to pass the learning out and the page title along with the editing URL.
+
+generateQtitle Function
+
+The class has a function called generateQtitle()which accepts the learning outcome as a string parameter. The generateQtitle()function will query the category table for a column called cat_pages where the cat_title is equal to the  passed learning outcome. The Cat_pages column represents the number of pages listed under a certain category so this function checks if no records where returned by the query then no pages are listed under this category and thus the title will be constructed using the passed learning outcome with question number as one. However, if the there is a record returned by the SQL query then the page title will be composed as the passed learning outcome with number of cat_pages after incrementing by one. Finally the constructed page title is returned by the function.
+
+addCategorylist  Function
+  
+This function queries the page table for a column called page_title where the page_namespace is equal to 14. Then in a loop it constructs the HTML code for a drop list containing all the categories available in the wiki. Then the function returns HTML code for a list Box for all the categories in a string. 
+
+Create an Assessment Special Page
+
+This special page (includes/specials/SpecialGenerateAnAssessment.php) allows the user to create exams in PDF format for the learning outcomes of their choice. The user can specify the learning outcomes to include in the exam along with the number of questions for each learning outcome. The class will generate two versions of the assessment one with Answer Key and one without. The class will include the same number of specified questions by the teacher as long as enough approved questions are available. If the number of questions specified by the teacher is greater than the available number of approved questions the system will include all the available approved questions. If the chosen learning outcome has no questions available then no questions will be included. The class has five functions: execute() function, addCategorylist() function,Generate_An_Assessment()function,LOG_An_Assessment()and Generate_PDF() function.
+
+
+
+
+
+Execute Function
+
+Displays the form for this page which includes two list boxes one filled with all the learning outcomes (categories) available in the wiki and the code for that is constructed via the addCategorylist() function. The other list box is empty and the form shows three buttons: copy, remove and remove all. The function loads the java scripts for these buttons (resources/Qti/MoveLO.js). The copy button copy the selected learning outcome from the learning outcome box and adds it to the empty list box. With each added learning outcome the java script will create an empty text box for the user to enter the number of questions for the added learning outcome. The remove button removes the selected learning outcome from the left list box while the remove all just empties the box. The functions calls the Generate_An_Assessment() upon submitting the form with action=”GenerateAssessment”.
+		
+Generate_An_Assessment Function
+
+This function queries the database to get all the approved questions under the learning outcomes specifies by the user. It also queries the database to get the total number of approved questions under each learning outcome to be able to check if the number specified by the user is less than or greater than the available questions. The first query uses four tables: approved_revs, revision, text and categorylinks. The approved_revs has the page id and the revision id of the approved revision. The revision table contains all the revisions for the pages as well as the id for the question body text. The text table contains the body of the pages and finally the categorylinks has the page id and the category it belongs to. The first query is shown in the below text box.
+
+
+
+
+
+
+
+
+
+
+
+
+The second query is shown in the text box below:
+
+
+
+
+
+
+The function will loop over the available approved pages and will include random pages as per the numbers indicated by the user for each learning outcome. Then an array of all the selected pages will be passed to another function called the Generate_PDF().
+
+Generate_PDF Function 
+
+This function takes the array of the questions prepared in the Generate_An_Assessment() function. This function loops over the question array and print them in a PDF file using an open source PDF library called tcpdf (includes/tcpdf/tcpdf.php). The content of the array is xml representation of the questions and for some of the questions, that were logged in after the cashing was enabled, the content is a zipped xml representation of the question. In order to differentiate between the zipped and unzipped xml the function libxml_use_internal_errors with true as parameter was used. This function will suppress the errors if an improper xml file was passed to the simplexml_load_string() which will return false without throwing an exception. Then the gzinflate() will be used to deflate the zipped xml. Then the category line will be stripped from the xml files before they are translated to text using an XSLT style sheet. Two XSLT style sheets will be used one for each version of the exams i.e. one with answers and one without (includes/PdfWoAnswers.xsl and includes/PdfWAnswers.xsl). After the PDF file is downloaded the function calls another function to log the download attempt in a history table. LOG_An_Assessment()
+
+LOG_An_Assessment Function
+
+This function logs the details of each generated exam including the date and time the exam was generated, the categories, the questions included as well as the user who generated the exam. For this sake a new table was added to the database it is called Assessments. The script for creating this table is shown in the below text box:
+
+
+CREATE TABLE Assessments (
+      Test_ID INT NOT NULL AUTO_INCREMENT, 
+      Test_Date char(30) default NULL,
+      user varchar(50) default NULL,
+      Test_Type varchar(50),
+      List_of_LO tinyblob,
+      Test_txt mediumblob,
+      PRIMARY KEY (Test_ID)
+) /*$wgDBTableOptions*/;
+
+
+
+Autoloader class 
+
+The autoloader class is a MediaWiki class that takes a class name and attempt to load it. This class was modified to load the new added classes namely the SpecialAddQuestion class, the SpecialGenerateAnAssessment class, the SpecialCreatBulkCategories class and the SpecialDownloadQuestions class.                 
+
+SpecialPageFactory class
+
+The SpecialPageFactory class is a Factory class responsiblefor handling the special page list and generating SpecialPage objects. This class was modified to add the newly added classes to the list of the special pages page in the wiki namely the SpecialAddQuestion class, the SpecialGenerateAnAssessment class, the SpecialCreatBulkCategories class and the SpecialDownloadQuestions class. 
+
+MonoBook class 
+
+The MonoBook class is the default skin class. This class modified to show the add question form in the side bar just like the search form. This way the form will displayed to the user in the sidebar all the time no matter what pages are being accessed.
+
+setupSkinUserCss Function
+
+This function was modified to add a Jquery script that checks if the user has selected a category before submitting the form and stops the form submission in case the category was not selected and it prompts the user to select a category.
+
+Execute function 
+
+Was modified to add the Add question form to the sidebar by calling a new added function called AddQuestionBox() which prints the html code for the form. 
+
+To have the java script for the Add question form in the sidebar loaded at all times the by adding the below code to content of the MediaWiki:Common.js page.
+
+CheckCat= function() {
+
+var catxt = document.getElementById("mw_Catlist").value;
+		
+   if (!catxt || catxt.length() <= 0 || catxt ==="")
+   {    alert('Please Choose A Category');
+        return false;
+    }
+    else { return true;}			
+};
+$(document).ready(function() {$("#mw-AddQButton").click(CheckCat);});
+
+Customizing the LocalSettings php file
+
+The LocalSettings file is the local configuration settings file for the MediaWiki.
+Set the default skin to monobook by adding this line to the configuration file
+
+$wgDefaultSkin = "monobook";
+
+Setting the access permission to lock the wiki 
+
+# The following permissions were set based on your choice in the installer
+//$wgGroupPermissions['*']['createaccount'] = true;
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['sysop']['createaccount'] = false;
+$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['user']['upload']= false;
+$wgGroupPermissions['*']['bulkcreate']= false;
+$wgGroupPermissions['sysop']['bulkcreate']= true;
+$wgGroupPermissions['user']['GenerateAssessment']= true;
+
+Setting the category tree extension (after downloading the Category extension folder from http://www.mediawiki.org/wiki/Extension:CategoryTree place it under the extensions folder) then add the following lines to the configuration file and create page as Category: Common core curriculum standards with this code in the body of the page:
+
+<categorytree mode='all' hidhideroot='off'>Common core curriculum standards</categorytree>
+
+require_once( "$IP/extensions/CategoryTree/CategoryTree.php");
+$wgEnableMWSuggest = true;
+$wgCategoryTreeSidebarRoot = 'Category:Common core curriculum standards';
+$wgCategoryTreeForceHeaders = true;
+$wgCategoryTreeCategoryPageOptions['mode'] = 'all';
+$wgCategoryTreeDefaultOptions['hideroot'] = 'off';
+$wgCategoryTreeSidebarOptions['hideroot'] = false;
+$wgCategoryTreeSidebarOptions['mode'] = CT_MODE_ALL;
+
+Enabling the approved_rev extension after installing the files from http://www.mediawiki.org/wiki/Extension:Approved_Revs under the extension folder 
+
+require_once( "$IP/extensions/ApprovedRevs/ApprovedRevs.php" );
+$egApprovedRevsShowApproveLatest = true;
+$wgGroupPermissions['Editors'] = $wgGroupPermissions['user'];
+$wgGroupPermissions['Editors']['approverevisions'] = true;
+
+Setting the Date and time Zone
+#Set Default Timezone
+$wgLocaltimezone = "Asia/Karachi";
+$oldtz = getenv("TZ");
+putenv("TZ=$wgLocaltimezone");
+# Versions before 1.7.0 used $wgLocalTZoffset as hours.
+# After 1.7.0 offset as minutes
+$wgLocalTZoffset = date("Z") / 60;
+putenv("TZ=$oldtz");
+ 
+Enabling the Cashing
+
+#Shared memory settings
+$wgMainCacheType = CACHE_ACCEL;
+$wgMessageCacheType = CACHE_ACCEL;
+$wgCacheDirectory = 'D:/Hosting/9845962/html/wiki/Cash';
+$wgParserCacheType = CACHE_ACCEL;
+$wgMemCachedServers = array();
+$wgUseGzip = true;
+$wgEnableSidebarCache = true;
+# NO DB HITS!
+$wgDisableCounters = true;
+$wgMiserMode = true;
+# Text cache
+$wgCompressRevisions = true; // use with care (see talk page)
+$wgRevisionCacheExpiry = 3*24*3600;
+$wgParserCacheExpireTime = 14*24*3600;
+
+Customizing the sidebar 
+
+To customize the links in the sidebar, edit the sidebar page by typing MediaWiki:Sidebar in the search box then click the edit link and the following code: 
+
+
+* navigation
+** mainpage|mainpage-description
+**:Category:Common_core_curriculum_standards|View Curriculum Tree
+** Special:AddQuestion | Add A Question
+** http://assessmentwiki.org/wiki/index.php?title=Special:ApprovedRevs&show=unapproved | Approve Questions
+** Special:GenerateAnAssessment|Create An Exam
+* Tutorials 
+** http://videobam.com/jqUfQ | How to Add A Question + How to Edit A Question
+** http://videobam.com/rjcYh | How to approve A Question edit + How to compare versions
+** http://videobam.com/nHhVO | How to create an Exam
+** http://videobam.com/zwlNl | How to start a discussion
+* For Administrators 
+** Special:DownloadQuestions|Download xml Questions
+** Special:CreatBulkCategories|Create Bulk Pages
+** Special:SpecialPages|Special Pages list
+* SEARCH
+
+
+Edit the main page by adding the following code
+
+'''Welcome to Curriculum Wiki'''
+
+== Getting started ==
+* [[:Category:Common_core_curriculum|View Common Core Curriculum Tree]]
+* [[Special:AddQuestion|Add A Question]]
+* [[Special:GenerateAnAssessment|Generate An Assessment]]
+* [[Special:DownloadQuestions|Download xml Questions]]

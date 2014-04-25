@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd" toolName="Eqiat" toolVersion="0.7~git" adaptive="false" timeDependent="false" identifier="ITEM_b889bd87be34fc63cba4b07127a7b9a3" title="Subtracting numbers within 1000 - Q1">
+  <stylesheet href="http://gauss.ecs.soton.ac.uk/eqiat/eqiat.css" type="text/css" title="Eqiat item styles, designed to override QTIEngine's output where appropriate"/>
+  <responseDeclaration identifier="RESPONSE_gap_0" cardinality="single" baseType="string">
+    <mapping defaultValue="0">
+      <mapEntry mapKey="534009" mappedValue="1"/>
+    </mapping>
+  </responseDeclaration>
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+  <itemBody>
+    <div>&#x645;&#x646;&#x62F;&#x631;&#x62C;&#x6C1; &#x630;&#x6CC;&#x644; &#x627;&#x639;&#x62F;&#x627;&#x62F; &#x6A9;&#x648; &#x62A;&#x641;&#x631;&#x6CC;&#x642; &#x6A9;&#x631;&#x6CC;&#x6BA;-</div>
+    <div class="eqiat-te">
+      <div class="textentrytextbody">
+        <p>564132 - 30123 = <textEntryInteraction responseIdentifier="RESPONSE_gap_0" expectedLength="7"/></p>
+      </div>
+    </div>
+  </itemBody>
+  <responseProcessing>
+    <setOutcomeValue identifier="SCORE">
+      <baseValue baseType="float">0.0</baseValue>
+    </setOutcomeValue>
+    <responseCondition>
+      <responseIf>
+        <not>
+          <isNull>
+            <variable identifier="RESPONSE_gap_0"/>
+          </isNull>
+        </not>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <mapResponse identifier="RESPONSE_gap_0"/>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+  </responseProcessing>
+</assessmentItem>

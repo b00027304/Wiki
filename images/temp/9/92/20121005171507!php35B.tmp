@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd" toolName="Eqiat" toolVersion="0.7~git" adaptive="false" timeDependent="false" identifier="ITEM_b889bd87be34fc63cba4b07127a7b9a3" title="Subtracting numbers within 1000 - Q5">
+  <stylesheet href="http://gauss.ecs.soton.ac.uk/eqiat/eqiat.css" type="text/css" title="Eqiat item styles, designed to override QTIEngine's output where appropriate"/>
+  <responseDeclaration identifier="RESPONSE_gap_0" cardinality="single" baseType="string">
+    <mapping defaultValue="0">
+      <mapEntry mapKey="21450 -7320 =14130" mappedValue="1"/>
+    </mapping>
+  </responseDeclaration>
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+  <itemBody>
+    <div>&#x639;&#x644;&#x6CC; &#x6A9;&#x6D2; &#x67E;&#x627;&#x633; 21450 &#x631;&#x648;&#x67E;&#x6D2; &#x6BE;&#x6CC;&#x6BA; &#x627;&#x633; &#x646;&#x6D2; &#x627;&#x646; &#x645;&#x6CC;&#x6BA; &#x633;&#x6D2; 7320 &#x631;&#x648;&#x67E;&#x6D2; &#x62E;&#x631;&#x686; &#x6A9;&#x631; &#x62F;&#x626;&#x6D2; &#x6D4; &#x639;&#x644;&#x6CC; &#x6A9;&#x6D2; &#x67E;&#x627;&#x633; &#x628;&#x627;&#x642;&#x6CC; &#x6A9;&#x62A;&#x646;&#x6D2; &#x628;&#x686;&#x6D2; &#x6BE;&#x6CC;&#x6BA;&#x6D4;</div>
+    <div class="eqiat-te">
+      <div class="textentrytextbody">
+        <p>
+          <textEntryInteraction responseIdentifier="RESPONSE_gap_0" expectedLength="20"/>
+        </p>
+      </div>
+    </div>
+  </itemBody>
+  <responseProcessing>
+    <setOutcomeValue identifier="SCORE">
+      <baseValue baseType="float">0.0</baseValue>
+    </setOutcomeValue>
+    <responseCondition>
+      <responseIf>
+        <not>
+          <isNull>
+            <variable identifier="RESPONSE_gap_0"/>
+          </isNull>
+        </not>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <mapResponse identifier="RESPONSE_gap_0"/>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+  </responseProcessing>
+</assessmentItem>

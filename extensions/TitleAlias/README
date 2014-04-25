@@ -1,0 +1,14 @@
+== INSTALL ==
+=== step 1 ===
+copy TitleAlias dir to extensions dir
+add include_once($IP.'/extensions/TitleAlias/TitleAlias.php'); to the end of your LocalSettings.php
+
+=== step 2 building database table ===
+cd mediawiki
+mv AdminSettings.sample AdminSettings.php
+vi AdminSettings.php
+cd maintenance
+php update.php
+
+If you don't have cli access to your server,you can manually
+build table.The table structure can be found in  ta.sql.
