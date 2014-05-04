@@ -52,13 +52,17 @@ $wgDBtype           = "mysql";
 $wgDBserver         = "localhost";
 $wgDBname           = "wikidb";
 $wgDBuser           = "root";
-$wgDBpassword       = "";
+$wgDBpassword       = "password";
 
 # MySQL specific settings
 $wgDBprefix         = "";
 
 # MySQL table options to use during installation or update
 $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=utf8";
+
+#API Settings
+$wgEnableAPI = true;
+$wgEnableWriteAPI = true;
 
 # Experimental charset support for MySQL 4.1/5.0.
 $wgDBmysql5 = false;
@@ -126,8 +130,8 @@ $wgDiff3 = "";
 $wgResourceLoaderMaxQueryLength = -1;
 
 # The following permissions were set based on your choice in the installer
-//$wgGroupPermissions['*']['createaccount'] = true;
-$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['createaccount'] = true;
+//$wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['sysop']['createaccount'] = false;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['user']['upload']= false;
