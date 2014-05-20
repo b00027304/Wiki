@@ -52,7 +52,7 @@ $wgDBtype           = "mysql";
 $wgDBserver         = "localhost";
 $wgDBname           = "wikidb";
 $wgDBuser           = "root";
-$wgDBpassword       = "password";
+$wgDBpassword       = "";
 
 # MySQL specific settings
 $wgDBprefix         = "";
@@ -63,6 +63,7 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=utf8";
 #API Settings
 $wgEnableAPI = true;
 $wgEnableWriteAPI = true;
+$wpIgnoreBlankSummary = true;
 
 # Experimental charset support for MySQL 4.1/5.0.
 $wgDBmysql5 = false;

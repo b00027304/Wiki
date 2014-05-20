@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd" toolName="Eqiat" toolVersion="0.7" adaptive="false" timeDependent="false" identifier="ITEM_ef7fce05da1b27becb86a87418334cfb" title="Math.Q1">
+  <responseDeclaration identifier="RESPONSE" cardinality="multiple" baseType="identifier">
+    <correctResponse>
+      <value>option_0</value>
+      <value>option_1</value>
+      <value>option_3</value>
+    </correctResponse>
+  </responseDeclaration>
+  <outcomeDeclaration identifier="FEEDBACK" cardinality="multiple" baseType="identifier"/>
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="integer">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+  <itemBody>
+    <div>Answer the following question.</div>
+    <div class="eqiat-mcr">
+      <choiceInteraction responseIdentifier="RESPONSE" shuffle="true">
+        <prompt>Which of the following are perfect numbers?</prompt>
+        <simpleChoice identifier="option_0" fixed="false">28</simpleChoice>
+        <simpleChoice identifier="option_1" fixed="false">6</simpleChoice>
+        <simpleChoice identifier="option_2" fixed="false">64</simpleChoice>
+        <simpleChoice identifier="option_3" fixed="false">496</simpleChoice>
+        <simpleChoice identifier="option_4" fixed="false">121</simpleChoice>
+      </choiceInteraction>
+    </div>
+  </itemBody>
+  <responseProcessing>
+    <setOutcomeValue identifier="SCORE">
+      <baseValue baseType="integer">0</baseValue>
+    </setOutcomeValue>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_0</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <baseValue baseType="integer">1</baseValue>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_1</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <baseValue baseType="integer">1</baseValue>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_2</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <baseValue baseType="integer">-1</baseValue>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_3</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <baseValue baseType="integer">1</baseValue>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_4</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="SCORE">
+          <sum>
+            <variable identifier="SCORE"/>
+            <baseValue baseType="integer">-1</baseValue>
+          </sum>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <lt>
+          <variable identifier="SCORE"/>
+          <baseValue baseType="integer">0</baseValue>
+        </lt>
+        <setOutcomeValue identifier="SCORE">
+          <baseValue baseType="integer">0</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <setOutcomeValue identifier="FEEDBACK">
+      <null/>
+    </setOutcomeValue>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_0</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="FEEDBACK">
+          <multiple>
+            <variable identifier="FEEDBACK"/>
+            <baseValue baseType="identifier">feedback_option_0</baseValue>
+          </multiple>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_1</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="FEEDBACK">
+          <multiple>
+            <variable identifier="FEEDBACK"/>
+            <baseValue baseType="identifier">feedback_option_1</baseValue>
+          </multiple>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_2</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="FEEDBACK">
+          <multiple>
+            <variable identifier="FEEDBACK"/>
+            <baseValue baseType="identifier">feedback_option_2</baseValue>
+          </multiple>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_3</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="FEEDBACK">
+          <multiple>
+            <variable identifier="FEEDBACK"/>
+            <baseValue baseType="identifier">feedback_option_3</baseValue>
+          </multiple>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+    <responseCondition>
+      <responseIf>
+        <member>
+          <baseValue baseType="identifier">option_4</baseValue>
+          <variable identifier="RESPONSE"/>
+        </member>
+        <setOutcomeValue identifier="FEEDBACK">
+          <multiple>
+            <variable identifier="FEEDBACK"/>
+            <baseValue baseType="identifier">feedback_option_4</baseValue>
+          </multiple>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+  </responseProcessing>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_0" showHide="show">
+    <div>Correct. 28 = 1+2+4+7+14</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_0" showHide="hide">
+    <div>Incorrect. 28 = 1+2+4+7+14</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_1" showHide="show">
+    <div>Correct. 6 = 1+2+3</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_1" showHide="hide">
+    <div>Incorrect. 6 = 1+2+3</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_2" showHide="show">
+    <div>Incorrect. 64 != 1+2+4+8+16+32</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_2" showHide="hide">
+    <div>Correct. 64 != 1+2+4+8+16+32</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_3" showHide="show">
+    <div>Correct.</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_3" showHide="hide">
+    <div>Incorrect.</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_4" showHide="show">
+    <div>Incorrect.</div>
+  </modalFeedback>
+  <modalFeedback outcomeIdentifier="FEEDBACK" identifier="feedback_option_4" showHide="hide">
+    <div>Correct.</div>
+  </modalFeedback>
+</assessmentItem>
