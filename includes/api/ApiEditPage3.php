@@ -178,7 +178,7 @@ class ApiEditPage extends ApiBase {
 			$this->dieUsageMsg( 'hashcheckfailed' );
 		}
 
-		$ep = new EditPage3( $articleObj );
+		$ep = new EditPage( $articleObj );
 		$ep->setContextTitle( $titleObj );
 
 		// EditPage wants to parse its stuff from a WebRequest
@@ -275,61 +275,61 @@ class ApiEditPage extends ApiBase {
 		global $wgMaxArticleSize;
 
 		switch( $status->value ) {
-			case EditPage3::AS_HOOK_ERROR:
-			case EditPage3::AS_HOOK_ERROR_EXPECTED:
+			case EditPage::AS_HOOK_ERROR:
+			case EditPage::AS_HOOK_ERROR_EXPECTED:
 				$this->dieUsageMsg( 'hookaborted' );
 
-			case EditPage3::AS_IMAGE_REDIRECT_ANON:
+			case EditPage::AS_IMAGE_REDIRECT_ANON:
 				$this->dieUsageMsg( 'noimageredirect-anon' );
 
-			case EditPage3::AS_IMAGE_REDIRECT_LOGGED:
+			case EditPage::AS_IMAGE_REDIRECT_LOGGED:
 				$this->dieUsageMsg( 'noimageredirect-logged' );
 
-			case EditPage3::AS_SPAM_ERROR:
+			case EditPage::AS_SPAM_ERROR:
 				$this->dieUsageMsg( array( 'spamdetected', $result['spam'] ) );
 
-			case EditPage3::AS_FILTERING:
+			case EditPage::AS_FILTERING:
 				$this->dieUsageMsg( 'filtered' );
 
-			case EditPage3::AS_BLOCKED_PAGE_FOR_USER:
+			case EditPage::AS_BLOCKED_PAGE_FOR_USER:
 				$this->dieUsageMsg( 'blockedtext' );
 
-			case EditPage3::AS_MAX_ARTICLE_SIZE_EXCEEDED:
-			case EditPage3::AS_CONTENT_TOO_BIG:
+			case EditPage::AS_MAX_ARTICLE_SIZE_EXCEEDED:
+			case EditPage::AS_CONTENT_TOO_BIG:
 				$this->dieUsageMsg( array( 'contenttoobig', $wgMaxArticleSize ) );
 
-			case EditPage3::AS_READ_ONLY_PAGE_ANON:
+			case EditPage::AS_READ_ONLY_PAGE_ANON:
 				$this->dieUsageMsg( 'noedit-anon' );
 
-			case EditPage3::AS_READ_ONLY_PAGE_LOGGED:
+			case EditPage::AS_READ_ONLY_PAGE_LOGGED:
 				$this->dieUsageMsg( 'noedit' );
 
-			case EditPage3::AS_READ_ONLY_PAGE:
+			case EditPage::AS_READ_ONLY_PAGE:
 				$this->dieReadOnly();
 
-			case EditPage3::AS_RATE_LIMITED:
+			case EditPage::AS_RATE_LIMITED:
 				$this->dieUsageMsg( 'actionthrottledtext' );
 
-			case EditPage3::AS_ARTICLE_WAS_DELETED:
+			case EditPage::AS_ARTICLE_WAS_DELETED:
 				$this->dieUsageMsg( 'wasdeleted' );
 
-			case EditPage3::AS_NO_CREATE_PERMISSION:
+			case EditPage::AS_NO_CREATE_PERMISSION:
 				$this->dieUsageMsg( 'nocreate-loggedin' );
 
-			case EditPage3::AS_BLANK_ARTICLE:
+			case EditPage::AS_BLANK_ARTICLE:
 				$this->dieUsageMsg( 'blankpage' );
 
-			case EditPage3::AS_CONFLICT_DETECTED:
+			case EditPage::AS_CONFLICT_DETECTED:
 				$this->dieUsageMsg( 'editconflict' );
 
 			// case EditPage::AS_SUMMARY_NEEDED: Can't happen since we set wpIgnoreBlankSummary
-			case EditPage3::AS_TEXTBOX_EMPTY:
+			case EditPage::AS_TEXTBOX_EMPTY:
 				$this->dieUsageMsg( 'emptynewsection' );
 
-			case EditPage3::AS_SUCCESS_NEW_ARTICLE:
+			case EditPage::AS_SUCCESS_NEW_ARTICLE:
 				$r['new'] = '';
 
-			case EditPage3::AS_SUCCESS_UPDATE:
+			case EditPage::AS_SUCCESS_UPDATE:
 				$r['result'] = 'Success';
 				$r['pageid'] = intval( $titleObj->getArticleID() );
 				$r['title'] = $titleObj->getPrefixedText();
@@ -349,10 +349,10 @@ class ApiEditPage extends ApiBase {
 				}
 				break;
 
-			case EditPage3::AS_SUMMARY_NEEDED:
+			case EditPage::AS_SUMMARY_NEEDED:
 				$this->dieUsageMsg( 'summaryrequired' );
 
-			case EditPage3::AS_END:
+			case EditPage::AS_END:
 				// $status came from WikiPage::doEdit()
 				$errors = $status->getErrorsArray();
 				$this->dieUsageMsg( $errors[0] ); // TODO: Add new errors to message map
